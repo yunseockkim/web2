@@ -16,6 +16,11 @@
 
   var callback = function(response){
     console.log(response);
+    if(response.status === 'connected'){
+      document.quertySelector('#authBtn').value = 'Logout';
+    }else{
+      document.quertySelector('#authBtn').value = 'login';
+    }
   }
   FB.getLoginStatus(callback); //{   // Called after the JS SDK has been initialized.
     //statusChangeCallback(response);        // Returns the login status.
@@ -38,6 +43,7 @@
   </script>
 </head>
 <body>
+  <input type="button" id="authBtn" value ="checking...">
   <h1><a href="index.html">WEB</a></h1>
   <input id="night_day" type="button" value="night" onclick="
     nightDayHandler(this);
