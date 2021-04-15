@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+  <title>WEB1 - Welcome</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="colors.js"></script>
+  <script>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '304933867664756',
+    cookie     : true,                     // Enable cookies to allow the server to access the session.
+    xfbml      : true,                     // Parse social plugins on this webpage.
+    version    : 'v10.0'           // Use this Graph API version for this call.
+  });
+
+  var callback = function(response){
+    console.log(response);
+  }
+  FB.getLoginStatus(callback); //{   // Called after the JS SDK has been initialized.
+    //statusChangeCallback(response);        // Returns the login status.
+  //});
+};
+
+
+(function(d, s, id) {
+  // Load the SDK asynchronously
+  var js,
+    fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://connect.facebook.net/ko_KR/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+})(document, "script", "facebook-jssdk");
+
+};
+  </script>
+</head>
+<body>
+  <h1><a href="index.html">WEB</a></h1>
+  <input id="night_day" type="button" value="night" onclick="
+    nightDayHandler(this);
+  ">
+  <ol id="nav">
+
+  </ol>
+  <h2>WEB</h2>
+  <article>
+    </article>
+    <script>
+      function fetchPage(name){
+        fetch(name).then(function(response){
+          response.text().then(function(text){
+            document.querySelector('article').innerHTML = text;
+        })
+      })
+      }
+      if(location.hash){
+        fetchPage(location.hash.substr(2));
+      }else{
+        fetchPage('welcome');
+      }
+      fetch('list').then(function(response){
+        response.text().then(function(text){
+          var items = text.split(',')
+          var i = 0;
+          var tags = '';
+          while(i<items.length){
+            var item = items[i];
+            item = item.trim();
+            var tag = '<li><a href="#!'+item+'" onclick="fetchPage(\''+item+'\')">'+item+'</a></li>'
+            console.log(tag);
+            tags = tags + tag;
+            i= i+1;
+          }
+          document.querySelector('#nav').innerHTML = tags;
+      })
+    })
+    </script>
+</body>
+</html>
