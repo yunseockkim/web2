@@ -6,6 +6,14 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="colors.js"></script>
   <script>
+  var checkLoginStatus = function(response){
+    console.log(response);
+    if(response.status === 'connected'){
+      document.querySelector('#authBtn').value = 'Logout';
+    }else{
+      document.querySelector('#authBtn').value = 'login';
+    }
+  }
   window.fbAsyncInit = function() {
   FB.init({
     appId      : '304933867664756',
@@ -14,15 +22,8 @@
     version    : 'v10.0'           // Use this Graph API version for this call.
   });
 
-  var callback = function(response){
-    console.log(response);
-    if(response.status === 'connected'){
-      document.quertySelector('#authBtn').value = 'Logout';
-    }else{
-      document.quertySelector('#authBtn').value = 'login';
-    }
-  }
-  FB.getLoginStatus(callback); //{   // Called after the JS SDK has been initialized.
+
+  FB.getLoginStatus(checkLoginStatus); //{   // Called after the JS SDK has been initialized.
     //statusChangeCallback(response);        // Returns the login status.
   //});
 };
@@ -43,7 +44,19 @@
   </script>
 </head>
 <body>
-  <input type="button" id="authBtn" value ="checking...">
+  <input type="button" id="authBtn" value ="checking..." onclick="
+    if(this.value === 'Login'){
+      FB.login(function(res){
+      console.log('login =>', res);
+      checkLoginStatus(res);
+    });
+  }else{
+      FB.logout(function(res){
+      console.log('logout =>', res);
+      checkLoginStatus(res);
+  });
+  }
+  ">
   <h1><a href="index.html">WEB</a></h1>
   <input id="night_day" type="button" value="night" onclick="
     nightDayHandler(this);
